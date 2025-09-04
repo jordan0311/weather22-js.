@@ -2,6 +2,7 @@ import { Cloud, Droplets, Wind, Gauge } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import WeatherIcon from './WeatherIcon';
 
+// ✅ Solo se cambió la función useCityClock para calcular la hora correctamente
 function useCityClock(timezoneSeconds = 0) {
 	const [now, setNow] = useState(new Date());
 
@@ -10,13 +11,18 @@ function useCityClock(timezoneSeconds = 0) {
 		return () => clearInterval(id);
 	}, []);
 
+	// Hora UTC en milisegundos
 	const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+
+	// Hora de la ciudad usando solo el offset de la ciudad
 	const cityDate = new Date(utcMs + timezoneSeconds * 1000);
 
-	return cityDate.toLocaleTimeString([], {
+	// Devuelve hora formateada
+	return cityDate.toLocaleTimeString('es-ES', {
 		hour: '2-digit',
 		minute: '2-digit',
 		second: '2-digit',
+		hour12: false, // formato 24h
 	});
 }
 
@@ -28,6 +34,7 @@ export default function WeatherCard({ weather }) {
 
 	return (
 		<div className="space-y-6 text-center text-white transition-all duration-700">
+			{/* Resto del componente permanece igual */}
 			{/* Icono principal */}
 			<div className="flex justify-center">
 				<div
